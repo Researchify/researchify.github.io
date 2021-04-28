@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>server.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,73 +34,54 @@
 
 <div id="main">
     
+    <h1 class="page-title">server.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This module configures and starts an express REST API server.
+ */
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+const connectDb = require('./config/db');
+const publicationsRouter = require('./routes/publications');
+const fooRouter = require('./routes/foo');
+const logger = require('./config/log');
+const usersRouter = require('./routes/users');
 
 
-    <section class="package">
-        <h3> </h3>		
+// Connect to the database
+connectDb();
+
+// Create and configure express server
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Use cors and express.json
+app.use(cors());
+app.use(express.json({limit: "30mb", extended: true})); // express.json() parses requests with json payloads and uses "body-parser"
+app.use(express.urlencoded({limit: "30mb", extended: true}));
+
+// "Welcome" route
+app.get('/', (req, res) => res.send('You have reached the Researchify API'));
+
+// Use the routes
+app.use('/foo', fooRouter);
+app.use('/publications', publicationsRouter);
+app.use('/users', usersRouter);
+
+// Listen for connections
+app.listen(PORT, () => logger.info(`Server running on port: ${PORT}`));</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme usertext">
-        <article><h1>Researchify</h1>
-<p>An open source lightweight CMS enabling streamlined webpage development for academic research groups.</p>
-<h2>Installation</h2>
-<p>Use the package manager <a href="https://www.npmjs.com/get-npm">npm</a> to install all required components.</p>
-<pre class="prettyprint source lang-bash"><code># install api
-cd api
-npm install
-
-# install client
-cd client
-npm install
-</code></pre>
-<p>To build Docker images in a single line using <a href="https://docs.docker.com/compose/reference/build/">docker-compose</a>:</p>
-<pre class="prettyprint source lang-bash"><code># in root project directory
-docker-compose build
-</code></pre>
-<h2>Usage</h2>
-<p>Run the <em>api</em> and <em>client</em> using <code>npm</code>.</p>
-<pre class="prettyprint source lang-bash"><code># run api
-cd api
-npm run start
-
-# run client
-cd client
-npm run start
-</code></pre>
-<p>Or via <a href="https://docs.docker.com/compose/reference/build/">docker-compose</a>:</p>
-<pre class="prettyprint source lang-bash"><code># in root project directory
-docker-compose up
-</code></pre>
-<h2>Documentation Site</h2>
-<p>In the api folder, run:</p>
-<pre class="prettyprint source lang-bash"><code> ./node_modules/.bin/jsdoc -c ./jsdoc_config.json --readme ./README.md -d ../docs
-</code></pre>
-<h2>Contributing</h2>
-<p>Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.</p>
-<p>Please make sure to update tests as appropriate.</p>
-<h2>License</h2>
-<p><a href="https://choosealicense.com/licenses/mit/">MIT</a></p></article>
-    </section>
-
-
 
 
 
