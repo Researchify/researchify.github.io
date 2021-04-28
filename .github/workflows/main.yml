@@ -11,7 +11,7 @@ jobs:
       with:
         repository: 'https://github.com/Researchify/Researchify'
         path: 'Researchify-main'
-        branch: 'vgoh1/api-documentation'
+        ref: 'vgoh1/api-documentation'
     - name: Checkout doc repo
       uses: actions/checkout@v2
       with:
