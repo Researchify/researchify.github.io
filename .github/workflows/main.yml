@@ -17,10 +17,12 @@ jobs:
         path: 'Researchify'
     - name: print-env
       uses: managedkaos/print-env@master
+    - name: ls
+      run: 'ls /home/runner/work/researchify.github.io/'
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
-        source_dir: ./api/src
+        source_dir: ./Researchify/api/src
         output_dir: ./Researchify/researchify.github.io/docs
         template: docdash
         config_file: ./api/jsdoc_config.json
