@@ -1,9 +1,12 @@
 name: GitHub Actions Demo
 
 on:
-  - workflow_dispatch
-  - repository_dispatch
-    types: trigger-deploy
+  workflow_dispatch:
+    branches:
+      - main
+  repository_dispatch:
+    types: 
+      - trigger-deploy
 
 jobs:
   generate-docs:  
