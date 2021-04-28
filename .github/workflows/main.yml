@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: Researchify Documentation Deployment
 
 on:
   workflow_dispatch:
