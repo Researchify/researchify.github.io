@@ -9,7 +9,7 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v2
       with:
-        repository: 'https://github.com/Researchify/Researchify'
+        repository: 'Researchify/Researchify'
         path: 'Researchify-main'
         ref: 'vgoh1/api-documentation'
     - name: Checkout doc repo
