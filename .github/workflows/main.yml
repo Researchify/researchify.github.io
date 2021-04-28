@@ -15,10 +15,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: 'researchify.github.io'
-    - name:
-      run: "pwd"
-    - name: ls
-      run: "ls -R /home/runner/work/researchify.github.io/"
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
@@ -26,7 +22,7 @@ jobs:
         output_dir: ./researchify.github.io/docs
         template: docdash
         config_file: ./api/jsdoc_config.json
-        front_page: README.md
+        front_page: ./api/README.md
     - name: Commit and push docs to branch
       uses: actions-js/push@master
       with:
