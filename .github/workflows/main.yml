@@ -30,6 +30,7 @@ jobs:
         branch: main
         message: "Generate API documentation"
         directory: './researchify.github.io'
+        force: true
 
   # deploy-docs:
   #   runs-on: ubuntu-latest
