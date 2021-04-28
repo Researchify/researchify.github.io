@@ -25,10 +25,10 @@ jobs:
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
-        source_dir: $${{ GITHUB_WORKSPACE }}/Researchify-main/api/src
-        output_dir: $${{ GITHUB_WORKSPACE }}/Researchify-docs/docs
+        source_dir: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/api/src
+        output_dir: $${{ env.GITHUB_WORKSPACE }}/Researchify-docs/docs
         template: docdash
-        config_file: $${{ GITHUB_WORKSPACE }}/Researchify-main/api/jsdoc_config.json
+        config_file: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/api/jsdoc_config.json
         front_page: README.md
     - name: Commit and push docs to branch
       uses: actions-js/push@master
@@ -36,7 +36,7 @@ jobs:
         github_token: $${{ secrets.GITHUB_TOKEN }}
         branch: main
         message: "Generate API documentation"
-        directory: '$${{ GITHUB_WORKSPACE }}/Researchify-docs'
+        directory: '$${{ env.GITHUB_WORKSPACE }}/Researchify-docs'
 
   deploy-docs:
     runs-on: ubuntu-latest
