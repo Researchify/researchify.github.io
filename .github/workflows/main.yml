@@ -18,7 +18,7 @@ jobs:
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
-        source_dir: ./api/src
+        source_dir: ./api/src/controllers
         output_dir: ./researchify.github.io/docs
         template: docdash
         config_file: ./api/jsdoc_config.json
