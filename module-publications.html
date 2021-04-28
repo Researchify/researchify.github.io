@@ -29,7 +29,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="researchify.html" target="_blank" class="menu-item" id="website_link" >Researchify</a></h2><h2><a href="repo.html" target="_blank" class="menu-item" id="website_link" >GitHub Repo</a></h2><h3>Modules</h3><ul><li><a href="module-publications.html">publications</a><ul class='methods'><li data-type='method'><a href="module-publications.html#~createPublication">createPublication</a></li><li data-type='method'><a href="module-publications.html#~deletePublication">deletePublication</a></li><li data-type='method'><a href="module-publications.html#~readAllPublicationsByTeam">readAllPublicationsByTeam</a></li><li data-type='method'><a href="module-publications.html#~readPublication">readPublication</a></li><li data-type='method'><a href="module-publications.html#~updatePublication">updatePublication</a></li></ul></li><li><a href="module-users.html">users</a><ul class='methods'><li data-type='method'><a href="module-users.html#~addUser">addUser</a></li><li data-type='method'><a href="module-users.html#~getUser">getUser</a></li><li data-type='method'><a href="module-users.html#~getUsers">getUsers</a></li><li data-type='method'><a href="module-users.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-users.html#~updateUser">updateUser</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-publications.html">publications</a><ul class='methods'><li data-type='method'><a href="module-publications.html#~createPublication">createPublication</a></li><li data-type='method'><a href="module-publications.html#~deletePublication">deletePublication</a></li><li data-type='method'><a href="module-publications.html#~readAllPublicationsByTeam">readAllPublicationsByTeam</a></li><li data-type='method'><a href="module-publications.html#~readPublication">readPublication</a></li><li data-type='method'><a href="module-publications.html#~updatePublication">updatePublication</a></li></ul></li><li><a href="module-users.html">users</a><ul class='methods'><li data-type='method'><a href="module-users.html#~addUser">addUser</a></li><li data-type='method'><a href="module-users.html#~getUser">getUser</a></li><li data-type='method'><a href="module-users.html#~getUsers">getUsers</a></li><li data-type='method'><a href="module-users.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-users.html#~updateUser">updateUser</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -176,7 +176,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="publications.js.html">publications.js</a>, <a href="publications.js.html#line70">line 70</a>
+        <a href="publications.js.html">publications.js</a>, <a href="publications.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -217,6 +217,12 @@
 
 <div class="description usertext">
     Handles a POST request, which will create a publication in the database using the endpoint /publications.
+<br />Validation rules: 
+<br />- at least one author, 
+<br />- title needs to be at least 3 characters, 
+<br />- description needs to be at least 5 characters,
+<br />- summary needs to be at least 5 characters,
+<br />- citedBy needs to be an integer value of 0 or greater
 </div>
 
 
@@ -265,7 +271,7 @@
 
             
 
-            <td class="description last">request object</td>
+            <td class="description last">request object - publication in body (see Publication model)</td>
         </tr>
 
     
@@ -440,7 +446,7 @@
 
             
 
-            <td class="description last">request object</td>
+            <td class="description last">request object - the publication id given in the url</td>
         </tr>
 
     
@@ -526,7 +532,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="publications.js.html">publications.js</a>, <a href="publications.js.html#line125">line 125</a>
+        <a href="publications.js.html">publications.js</a>, <a href="publications.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -622,7 +628,7 @@
 
             
 
-            <td class="description last">request object</td>
+            <td class="description last">request object - team id given in the url</td>
         </tr>
 
     
@@ -640,7 +646,7 @@
 
             
 
-            <td class="description last">response object</td>
+            <td class="description last">response object - a list of publications (see Publications model)</td>
         </tr>
 
     
@@ -708,7 +714,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="publications.js.html">publications.js</a>, <a href="publications.js.html#line100">line 100</a>
+        <a href="publications.js.html">publications.js</a>, <a href="publications.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -797,7 +803,7 @@
 
             
 
-            <td class="description last">request object</td>
+            <td class="description last">request object - including the publication id given in the url</td>
         </tr>
 
     
@@ -815,7 +821,7 @@
 
             
 
-            <td class="description last">response object</td>
+            <td class="description last">response object - publication (see Publications model)</td>
         </tr>
 
     
@@ -972,7 +978,7 @@
 
             
 
-            <td class="description last">request object</td>
+            <td class="description last">request object - the publication id given in the url, publication in body (see Publication model)</td>
         </tr>
 
     
@@ -990,7 +996,7 @@
 
             
 
-            <td class="description last">response object</td>
+            <td class="description last">response object - updated publication</td>
         </tr>
 
     
@@ -1061,7 +1067,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Apr 28 2021 07:04:30 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Apr 28 2021 07:39:34 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

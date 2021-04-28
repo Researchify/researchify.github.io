@@ -29,7 +29,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="researchify.html" target="_blank" class="menu-item" id="website_link" >Researchify</a></h2><h2><a href="repo.html" target="_blank" class="menu-item" id="website_link" >GitHub Repo</a></h2><h3>Modules</h3><ul><li><a href="module-publications.html">publications</a><ul class='methods'><li data-type='method'><a href="module-publications.html#~createPublication">createPublication</a></li><li data-type='method'><a href="module-publications.html#~deletePublication">deletePublication</a></li><li data-type='method'><a href="module-publications.html#~readAllPublicationsByTeam">readAllPublicationsByTeam</a></li><li data-type='method'><a href="module-publications.html#~readPublication">readPublication</a></li><li data-type='method'><a href="module-publications.html#~updatePublication">updatePublication</a></li></ul></li><li><a href="module-users.html">users</a><ul class='methods'><li data-type='method'><a href="module-users.html#~addUser">addUser</a></li><li data-type='method'><a href="module-users.html#~getUser">getUser</a></li><li data-type='method'><a href="module-users.html#~getUsers">getUsers</a></li><li data-type='method'><a href="module-users.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-users.html#~updateUser">updateUser</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-publications.html">publications</a><ul class='methods'><li data-type='method'><a href="module-publications.html#~createPublication">createPublication</a></li><li data-type='method'><a href="module-publications.html#~deletePublication">deletePublication</a></li><li data-type='method'><a href="module-publications.html#~readAllPublicationsByTeam">readAllPublicationsByTeam</a></li><li data-type='method'><a href="module-publications.html#~readPublication">readPublication</a></li><li data-type='method'><a href="module-publications.html#~updatePublication">updatePublication</a></li></ul></li><li><a href="module-users.html">users</a><ul class='methods'><li data-type='method'><a href="module-users.html#~addUser">addUser</a></li><li data-type='method'><a href="module-users.html#~getUser">getUser</a></li><li data-type='method'><a href="module-users.html#~getUsers">getUsers</a></li><li data-type='method'><a href="module-users.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-users.html#~updateUser">updateUser</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -58,7 +58,7 @@ const Team = require("../models/team.model");
 /**
  * Handles a DELETE request to delete a publication by the mongo object id on the endpoint /publications/:id.
  *
- * @param req request object
+ * @param req request object - the publication id given in the url
  * @param res response object
  * @returns 200: publication deleted successfully
  * @returns 404: publication not found
@@ -80,8 +80,8 @@ async function deletePublication(req, res) {
 /**
  * Handles a PATCH request, which represents updating a specific publication, on the /publications/:id endpoint.
  *
- * @param req request object
- * @param res response object
+ * @param req request object - the publication id given in the url, publication in body (see Publication model)
+ * @param res response object - updated publication
  * @returns 200: the newly updated publication
  * @returns 404: publication not found
  * @returns 422: error in the request object, unable to update publication
@@ -106,8 +106,14 @@ async function updatePublication(req, res) {
 
 /**
  * Handles a POST request, which will create a publication in the database using the endpoint /publications.
+ * &lt;br />Validation rules: 
+ * &lt;br />- at least one author, 
+ * &lt;br />- title needs to be at least 3 characters, 
+ * &lt;br />- description needs to be at least 5 characters,
+ * &lt;br />- summary needs to be at least 5 characters,
+ * &lt;br />- citedBy needs to be an integer value of 0 or greater
  * 
- * @param req request object
+ * @param req request object - publication in body (see Publication model)
  * @param res response object
  * @returns 201: the publication has been created
  * @returns 400: the publication given in the request fails some validation also @see validationMiddlewares
@@ -137,8 +143,8 @@ async function createPublication(req, res) {
 /**
  * Handles a GET request, which will retrieve the specified publication in the database with the given mongo object id in the endpoint /publications/:id
  * 
- * @param req request object
- * @param res response object
+ * @param req request object - including the publication id given in the url
+ * @param res response object - publication (see Publications model)
  * @returns 200: the specified publication was found
  * @returns 400: given publication id is not in a valid hexadecimal format
  * @returns 404: no publications were found
@@ -161,8 +167,8 @@ async function readPublication(req, res) {
 /**
  * Handles a GET request, which will retrieve all publications by team in the endpoint /publications/team/:team_id.
  * 
- * @param req request object
- * @param res response object
+ * @param req request object - team id given in the url
+ * @param res response object - a list of publications (see Publications model)
  * @returns 200: a list of publications by the given team id
  * @returns 400: given team id is not in a valid hexadecimal format
  * @returns 404: the specified team or publication was not found
@@ -203,7 +209,7 @@ module.exports = {deletePublication, updatePublication, createPublication, readP
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Apr 28 2021 07:04:30 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Apr 28 2021 07:39:34 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
