@@ -1,0 +1,51 @@
+name: GitHub Actions Demo
+
+on: [push, workflow_dispatch]
+
+jobs:
+  checkout-code:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+      repository: 'https://github.com/Researchify/Researchify'
+      path: 'Researchify-main'
+      branch: 'vgoh1/api-documentation'
+    - name: Checkout doc repo
+      uses: actions/checkout@v2
+      path: 'Researchify-docs'
+  
+  generate-docs:  
+    runs-on: ubuntu-latest
+    needs:
+    - checkout-code
+    steps:
+    - name: Generate docs
+      uses: andstor/jsdoc-action@v1
+      with:
+        source_dir: $${{ GITHUB_WORKSPACE }}/Researchify-main/api/src
+        output_dir: $${{ GITHUB_WORKSPACE }}/Researchify-docs/docs
+        template: docdash
+        config_file: $${{ GITHUB_WORKSPACE }}/Researchify-main/api/jsdoc_config.json
+        front_page: README.md
+    - name: Move docs to doc repo
+    - name: Commit and push docs to branch
+      uses: actions-js/push@master
+      with:
+        github_token: $${{ secrets.GITHUB_TOKEN }}
+        branch: main
+        message: "Generate API documentation"
+        directory: '$${{ GITHUB_WORKSPACE }}/Researchify-docs/docs'
+
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs:
+      - generate-docs
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      with:
+        branch: main
+        folder: ./docs
