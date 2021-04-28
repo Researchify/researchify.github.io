@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>users.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,80 +34,138 @@
 
 <div id="main">
     
+    <h1 class="page-title">users.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This module implements handlers for the "users" route.
+ * @module users
+ */
+const mongoose = require("mongoose");
 
+const User = require("../models/user.model");
 
-    <section class="package">
-        <h3> </h3>		
-    </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme usertext">
-        <article><h1>Researchify API Documentation</h1>
-<hr>
-<p>You can read about the APIs that have been created for <strong>Researchify</strong> - a web platform for academic professionals to present and share their publications.</p>
-<p>Here are the APIs we have so far:</p>
-<table>
-<thead>
-<tr>
-<th>API Name</th>
-<th>Description</th>
-<th>Model</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>publications</td>
-<td>Used to perform CRUD operations on publications from our database.</td>
-<td><a href="#Publication">Publication</a></td>
-</tr>
-<tr>
-<td>users</td>
-<td>Used to perform CRUD and login operations on users.</td>
-<td><a href="#User">User</a></td>
-</tr>
-</tbody>
-</table>
-<h1>Models</h1>
-<h2>Publication <a name="Publication"></a></h2>
-<pre class="prettyprint source"><code>{
-    &quot;teamId&quot;: &quot;606bb59c22201f529db920c9&quot;,
-    &quot;authors&quot;: [
-        &quot;A&quot;
-    ],
-    &quot;title&quot;: &quot;Some title&quot;,
-    &quot;link&quot;: &quot;https://wonder.cdc.gov/wonder/Prevguid/m0047449/m0047449.asp&quot;,
-    &quot;description&quot;: &quot;State and local public health officials rely on health-care providers, laboratories, and other public health personnel to report the occurrence of notifiable diseases to state and local health departments.&quot;,
-    &quot;yearPublished&quot;: &quot;2020&quot;
+/**
+ * Handles a GET request to get all users on the database on the endpoint /users.
+ *
+ * @param req request object
+ * @param res response object
+ * @returns 200: JSON objects of all users
+ * @returns 500: there was an internal error trying to get all the users
+ */
+async function getUsers(req, res) {
+  User.find()
+    .then((users) => res.json(users))
+    .catch((err) => res.status(500).json("Error: " + err));
 }
+
+/**
+ * Handles a GET request, which will get a particular user using the given mongo id on the endpoint /users/:id
+ * 
+ * @param req request object
+ * @param res response object
+* @returns 200: the specified user was found
+ * @returns 400: given user id is not in a valid hexadecimal format
+ * @returns 404: no user was found
+ */
+ async function getUser(req, res) {
+  const {id: _id} = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(400).send('Error: The provided user id is not in a valid hexadecimal format.');
+  
+  const targetUser = await User.findById(_id);
+
+  if (targetUser == null) { 
+      res.status(404).send('Error: No user matching the id was found.');
+  } else {
+      res.status(200).json(targetUser);
+  }
+}
+
+/**
+ * Handles a POST request to add a new user to the database on the endpoint /users.
+ *
+ * @param req request object
+ * @param res response object
+ * @returns 201: user was added
+ * @returns 400: error adding the user
+ */
+async function addUser(req, res) {
+  const newUser = new User({
+    givenName: req.body.givenName,
+    familyName: req.body.familyName,
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  newUser
+    .save()
+    .then(() => res.status(201).json("User added!"))
+    .catch((err) => res.status(400).json("Error: " + err));
+}
+
+/**
+ * Handles a POST request to verify the login credentials of a user on the endpoint /users/login.
+ *
+ * @param req request object
+ * @param res response object
+ * @returns 200: successfully logged in
+ * @returns 400: Error trying to login
+ * @returns 403: incorrect password
+ */
+async function loginUser(req, res) {
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      if (user == null) {
+        res.status(400).send("User not found");
+      } else if (user.password != req.body.password) {
+        res.status(403).send("Incorrect password");
+      } else {
+        res.send("Successfully logged in");
+      }
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+}
+
+/**
+ * Handles a PATCH request to update a user's details on the endpoint /users/:id.
+ *
+ * @param req request object
+ * @param res response object
+ * @returns 200: returns updated user details
+ * @returns 404: user not found
+ * @returns 400: error updating user
+ */
+async function updateUser(req, res) {
+  const { id: _id } = req.params;
+  const user = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send("Error: No user with that id.");
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(_id, user, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(400).json(`Error: ${err.message}`);
+  }
+}
+
+module.exports = { getUsers, getUser, addUser, loginUser, updateUser };
 </code></pre>
-<h2>User <a name="User"></a></h2>
-<pre class="prettyprint source"><code>{
-    &quot;givenName&quot;: &quot;Joel&quot;,
-    &quot;familyName&quot;: &quot;Selwood&quot;,
-    &quot;email&quot;: &quot;&lt;email>&quot;,
-    &quot;password&quot;: &quot;&lt;password>&quot;
-}
-</code></pre></article>
+        </article>
     </section>
-
-
 
 
 
