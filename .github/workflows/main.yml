@@ -14,7 +14,7 @@ jobs:
     - name: Checkout doc repo
       uses: actions/checkout@v2
       with:
-        path: 'Researchify'
+        path: 'researchify.github.io'
     - name:
       run: "pwd"
     - name: ls
@@ -23,7 +23,7 @@ jobs:
       uses: andstor/jsdoc-action@v1
       with:
         source_dir: ./api/src
-        output_dir: ./Researchify/docs
+        output_dir: ./researchify.github.io/docs
         template: docdash
         config_file: ./api/jsdoc_config.json
         front_page: README.md
@@ -33,7 +33,7 @@ jobs:
         github_token: $${{ secrets.GITHUB_TOKEN }}
         branch: main
         message: "Generate API documentation"
-        directory: './Researchify'
+        directory: './researchify.github.io'
 
   deploy-docs:
     runs-on: ubuntu-latest
@@ -46,4 +46,4 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.1
       with:
         branch: main
-        folder: ./docs
+        folder: ./researchify.github.io/docs
