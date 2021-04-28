@@ -3,13 +3,6 @@ name: GitHub Actions Demo
 on: [push, workflow_dispatch]
 
 jobs:
-  debugging-vars:
-    runs-on: ubuntu-latest
-    steps:
-      - run: "echo ${{ env.GITHUB_WORKSPACE }}"
-      - run: "ls"
-      - run: "ls $GITHUB_WORKSPACE"
-
   generate-docs:  
     runs-on: ubuntu-latest
     steps:
@@ -26,11 +19,11 @@ jobs:
     - name: print-env
       uses: managedkaos/print-env@master
     - name: debugging
-      run: "ls /home/runner/work/researchify.github.io"
+      run: "ls /github/workspace/"
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
-        source_dir: /github/workspace/Researchify-main/Researchify/Researchify/api/src
+        source_dir: /github/workspace/Researchify/Researchify/api/src
         output_dir: /github/workspace/Researchify-docs/Researchify/researchify.github.io/docs
         template: docdash
         config_file: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/Researchify/Researchify/api/jsdoc_config.json
