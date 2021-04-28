@@ -19,7 +19,7 @@ jobs:
       uses: andstor/jsdoc-action@v1
       with:
         source_dir: ./api/src/controllers
-        output_dir: ./researchify.github.io/docs
+        output_dir: ./researchify.github.io/
         template: docdash
         config_file: ./api/jsdoc_config.json
         front_page: ./api/README.md
