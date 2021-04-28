@@ -20,7 +20,7 @@ jobs:
   debugging-vars:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "$${{ env.GITHUB_WORKSPACE }}"
+    - run: echo "${{ env.GITHUB_WORKSPACE }}"
   
   generate-docs:  
     runs-on: ubuntu-latest
