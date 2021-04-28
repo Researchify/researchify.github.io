@@ -17,11 +17,6 @@ jobs:
       with:
         path: 'Researchify-docs'
 
-  debugging-vars:
-    runs-on: ubuntu-latest
-    steps:
-    - run: echo "${{ env.GITHUB_WORKSPACE }}"
-  
   generate-docs:  
     runs-on: ubuntu-latest
     needs:
@@ -30,10 +25,10 @@ jobs:
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
-        source_dir: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/api/src
-        output_dir: $${{ env.GITHUB_WORKSPACE }}/Researchify-docs/docs
+        source_dir: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/Researchify/Researchify/api/src
+        output_dir: $${{ env.GITHUB_WORKSPACE }}/Researchify-docs/Researchify/researchify.github.io/docs
         template: docdash
-        config_file: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/api/jsdoc_config.json
+        config_file: $${{ env.GITHUB_WORKSPACE }}/Researchify-main/Researchify/Researchify/api/jsdoc_config.json
         front_page: README.md
     - name: Commit and push docs to branch
       uses: actions-js/push@master
@@ -41,7 +36,7 @@ jobs:
         github_token: $${{ secrets.GITHUB_TOKEN }}
         branch: main
         message: "Generate API documentation"
-        directory: '$${{ env.GITHUB_WORKSPACE }}/Researchify-docs'
+        directory: '$${{ env.GITHUB_WORKSPACE }}/Researchify-docs/Researchify/researchify.github.io/'
 
   deploy-docs:
     runs-on: ubuntu-latest
