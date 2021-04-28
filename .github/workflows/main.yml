@@ -15,8 +15,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: 'Researchify'
-    # - name: print-env
-    #   uses: managedkaos/print-env@master
     - name:
       run: "pwd"
     - name: ls
@@ -24,8 +22,8 @@ jobs:
     - name: Generate docs
       uses: andstor/jsdoc-action@v1
       with:
-        source_dir: ./researchify.github.io/api/src
-        output_dir: ./Researchify/researchify.github.io/docs
+        source_dir: ./api/src
+        output_dir: ./Researchify/docs
         template: docdash
         config_file: ./api/jsdoc_config.json
         front_page: README.md
@@ -35,7 +33,7 @@ jobs:
         github_token: $${{ secrets.GITHUB_TOKEN }}
         branch: main
         message: "Generate API documentation"
-        directory: './Researchify/researchify.github.io/'
+        directory: './Researchify'
 
   deploy-docs:
     runs-on: ubuntu-latest
