@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: 'Researchify/Researchify'
-        ref: 'vgoh1/api-documentation'
+        ref: 'main'
     - name: Checkout doc repo
       uses: actions/checkout@v2
       with:
