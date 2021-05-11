@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>team.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,81 +34,80 @@
 
 <div id="main">
     
+    <h1 class="page-title">team.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This module contains handlers for the "team" route.
+ */
+const axios = require("axios");
 
 
-    <section class="package">
-        <h3> </h3>		
-    </section>
+const options = {
+    headers: {'Authorization': "Bearer " + process.env.TWITTER_BEARER_TOKEN}
+};
 
+/**
+ * Associates a twitter handle with a team on the /team/twitter-handle/:team-id endpoint. 
+ * @param {*} req request object, containing the team_id in the url and twitter handle in the body
+ * @param {*} res response object
+ * @returns 200: successful added twitter handle to team
+ * @returns 400: team id is not in a valid hexadecimal format
+ * @returns 404: team is not found, or handle is invalid
+ * @returns 500: error trying to update the document in db
+ */
+async function storeHandle(req, res) {
+    const {twitterHandle: handle} = req.body;
+    let foundTeam = req.foundTeam;
 
+    if (handle.length == 0) {  // remove the handle from the doc
+        foundTeam.twitterHandle = ""
+    } else {  // update the handle
+        // validate the handle by getting user id
+        if (!process.env.TWITTER_BEARER_TOKEN) {
+            return res.status(500).send("Error: No Twitter API Bearer Token found in .env file");
+        }
+        let response = await axios.get("https://api.twitter.com/2/users/by/username/" + handle, options)
+        if (response.data.errors) {
+            return res.status(400).send("Error: " + response.data.errors[0].detail);
+        } else {
+            foundTeam.twitterHandle = handle;
+        }
+    }
 
-
-
-
-
-
-
+    try {  // update in db
+        foundTeam.save();
+        return res.status(200).json(foundTeam);
+    } catch (err) {
+        return res.status(500).send(`Error: ${err.message}`);
+    }
     
-
-
-
-    <section class="readme usertext">
-        <article><h1>Researchify API Documentation</h1>
-<hr>
-<p><a href="https://github.com/Researchify/Researchify">Researchify on GitHub</a></p>
-<p>You can read about the APIs that have been created for <a href="http://researchify-env.eba-ca3rpuzw.us-east-1.elasticbeanstalk.com/"><strong>Researchify</strong></a> - a web platform for academic professionals to present and share their publications.</p>
-<p>Here are the APIs we have so far:</p>
-<table>
-<thead>
-<tr>
-<th>API Name</th>
-<th>Description</th>
-<th>Model</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>publications</td>
-<td>Used to perform CRUD operations on publications from our database.</td>
-<td><a href="#Publication">Publication</a></td>
-</tr>
-<tr>
-<td>users</td>
-<td>Used to perform CRUD and login operations on users.</td>
-<td><a href="#User">User</a></td>
-</tr>
-</tbody>
-</table>
-<h1>Models</h1>
-<h2>Publication <a name="Publication"></a></h2>
-<pre class="prettyprint source"><code>{
-    &quot;teamId&quot;: &quot;606bb59c22201f529db920c9&quot;,
-    &quot;authors&quot;: [
-        &quot;A&quot;
-    ],
-    &quot;title&quot;: &quot;Some title&quot;,
-    &quot;link&quot;: &quot;https://wonder.cdc.gov/wonder/Prevguid/m0047449/m0047449.asp&quot;,
-    &quot;description&quot;: &quot;State and local public health officials rely on health-care providers, laboratories, and other public health personnel to report the occurrence of notifiable diseases to state and local health departments.&quot;,
-    &quot;yearPublished&quot;: &quot;2020&quot;
 }
-</code></pre>
-<h2>User <a name="User"></a></h2>
-<pre class="prettyprint source"><code>{
-    &quot;givenName&quot;: &quot;Joel&quot;,
-    &quot;familyName&quot;: &quot;Selwood&quot;,
-    &quot;email&quot;: &quot;&lt;email>&quot;,
-    &quot;password&quot;: &quot;&lt;password>&quot;
+
+/**
+ * Gets the team document from the database on /team/:team_id.
+ * @param {*} req request object, containing team id in the url 
+ * @param {*} res response object, the found team document
+ * @returns 200: the team was found
+ * @returns 404: team is not found
+ * @returns 400: team id is not in a valid hexadecimal format
+ */
+async function getTeam(req, res) {
+
+    return res.status(200).send(req.foundTeam);
+
 }
-</code></pre></article>
+
+module.exports = { storeHandle, getTeam };</code></pre>
+        </article>
     </section>
-
-
 
 
 
